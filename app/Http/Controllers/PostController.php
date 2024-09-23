@@ -30,10 +30,11 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $post = new Post();
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->save();
+       Post::create([
+            'title'=> $request->title,
+            'description'=> $request->description,
+            'image' => $this->uploadImage($request->file('image'),'images')
+        ]);
         return redirect()->route('posts.index');
     }
 
@@ -63,7 +64,9 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Post::find($id);
+        $this->deleteImage( $post->image);
         $post->title = $request->title;
+        $post->image =  $this->uploadImage($request->file('image'),'images');
         $post->description = $request->description;
         $post->update();
 
@@ -76,7 +79,21 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
-        $post->delete();
+        $this->deleteImage($post->image);
+        $post->delete();    
         return redirect()->route('posts.index');
+    }
+
+    public function uploadImage($image,$folderPath)
+    {
+        $fileName = time() . '.' . $image->getClientOriginalExtension();
+        $uploadedImage = $image->storeAs($folderPath, $fileName,'public');
+
+        return $uploadedImage;
+    }
+
+    public function deleteImage($path)
+    {
+        @unlink(storage_path('app/public/' . $path));
     }
 }

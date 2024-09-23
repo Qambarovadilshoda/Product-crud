@@ -10,7 +10,7 @@
 
 <body>
 
-    <form action="{{ route('posts.store') }}" method="POST">
+    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @error('title')
             {{ $message }}
@@ -21,6 +21,11 @@
         @enderror
         <textarea name="description" cols="30" rows="10" placeholder="Description">
         </textarea>
+        @error('image')
+            {{ $message }}
+        @enderror
+        <input type="file" name="image">
+
         <input type="submit" value="Submit">
     </form>
 

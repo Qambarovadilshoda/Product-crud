@@ -10,7 +10,7 @@
 
 <body>
 
-    <form action="{{ route('posts.update',$post->id) }}" method="POST">
+    <form action="{{ route('posts.update',$post->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
         @error('title')
@@ -23,6 +23,10 @@
         <textarea name="description" cols="30" rows="10" placeholder="Description">
             {{$post->description}}
         </textarea>
+        @error('image')
+            {{ $message }}
+        @enderror
+     <input type="file" name="image">
         <input type="submit" value="Submit">
     </form>
 
