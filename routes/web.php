@@ -1,10 +1,21 @@
 <?php
 
-use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $user = Auth::user();
+    return view('welcome', compact('user'));
 });
+Route::get('/register',[AuthController::class,'registerForm'])->name('registerForm');
 
-Route::resource('posts',PostController::class);
+// login routes
+Route::get('/login',[AuthController::class,'loginForm'])->name('loginForm');
+Route::post('/login',[AuthController::class,'handleLogin'])->name('login');
+
+
+Route::post('/register',[AuthController::class,'handleRegister'])->name('register');
+
+Route::delete('/logout',[AuthController::class,'logout'])->name('logout');
