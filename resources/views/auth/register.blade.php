@@ -16,6 +16,7 @@
         @enderror
         <input type="text" name="name" placeholder="User Name"> <br>
         <input type="email" name="email" placeholder="User Email"> <br>
+        <input type="number" name="age" placeholder="User Age"> <br>
         <input type="password" name="password" placeholder="User Password"> <br>
         <input type="submit" value="Submit">
     </form>
