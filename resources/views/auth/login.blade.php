@@ -17,6 +17,8 @@
         <input type="password" name="password" placeholder="User Password"> <br>
         <input type="submit" value="Submit">
     </form>
+    <a href="{{route('registerForm')}}">Register</a>
+
 
 </body>
 </html>

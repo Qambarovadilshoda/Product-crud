@@ -2,55 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
+    public function loginForm(){
+        return view('auth.login');
+    }
     public function registerForm(){
-        return view("auth.register");
+        return view('auth.register');
     }
+    public function login(Request $request){
+       $user = User::where('email', $request->email)->first();
+       if(!Hash::check($request->password,$user->password)){
+        return redirect()->back();
 
-    public function handleRegister(StoreUserRequest $request)
-    {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email; 
-        $user->password = bcrypt($request->password);
-        $user->save();
-       
+       }
+
+       Auth::login($user);
+       return redirect()->route('products.index');
+
+    }
+    public function register(RegisterRequest $request){
+        $user = User::create([
+            'name'=> $request->name,
+            'email'=> $request->email,
+            'age'=>$request->age,
+            'password'=> bcrypt($request->password),
+
+        ]);
         Auth::login($user);
-
-        return redirect("/");
+        return redirect()->route('products.index');
     }
-
     public function logout(){
         Auth::logout();
-
-        return redirect("/");
-    }
-
-    public function loginForm(){
-        return view("auth.login");
-    }
-
-    public function handleLogin(Request $request){
-
-        $request->validate([
-                "email"=> "required|exists:users,email",
-            ]);
-        
-            $user = User::where("email", $request->email)->first();
-            if(Hash::check($request->password, $user->password)){
-                
-                Auth::attempt(["email"=> $request->email,"password"=> $request->password]);
-
-                return redirect("/");
-            }else{
-                return 'Incorrect Password';
-            }
-    }
+        return redirect()->route('loginForm');
+    }        
 }

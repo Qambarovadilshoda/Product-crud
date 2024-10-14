@@ -1,6 +1,12 @@
 <div>
     <!-- The best way to take care of the future is to take care of the present moment. - Thich Nhat Hanh -->
-<h1>XEXE</h1>
+<h1>{{auth()->user()->name}}</h1>
+<form action="{{route('logout')}}" method="POST">
+    @csrf
+    @method('DELETE')
+    <button type="submit">logout</button>
+</form>
+<a href="{{ route('products.create') }}">Create</a>
 @foreach ($products as $product)
     {{$product->id}}<br>
     {{$product->name}}<br>

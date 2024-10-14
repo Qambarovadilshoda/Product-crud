@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-$user = User::create([
-    'name'=> 'fubwieufb',
-    'email'=> uniqid()."@gmail.com",
-    'password'=> Hash::make('hdh'),
-    
-]);
-return $user;
-})->name('home');
-
-Route::resource('products', ProductController::class);
+Route::resource('products', ProductController::class)->middleware('checkAuth');
+Route::get('register', [AuthController::class, 'registerForm'])->name('registerForm');
+Route::post('/register',[AuthController::class,'register'])->name('register');
+Route::get('login', [AuthController::class, 'loginForm'])->name('loginForm');
+Route::post('/login', [AuthController::class,'login'])->name('login');
+Route::delete('/logout',[AuthController::class,'logout'])->name('logout');

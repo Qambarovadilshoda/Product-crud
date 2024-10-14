@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\CheckAgeMiddleware;
+use App\Http\Middleware\CheckAuthMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'checkAge' => CheckAgeMiddleware::class,
             'auth' => AuthMiddleware::class,
+            'checkAuth' => CheckAuthMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

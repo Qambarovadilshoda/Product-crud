@@ -25,7 +25,7 @@ class ProductController extends Controller
         $product->image()->create([
             'path'=> $uploadedImage,
         ]);
-        return $product->load('image');
+        return redirect()->route('products.index');
 
     }
     
