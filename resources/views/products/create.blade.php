@@ -1,23 +1,42 @@
-<div>
-    <!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->
-</div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    
-    <form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="text" name='name'>
-        <input type="text" name='description'>
-        <input type="file" name='image'>
-        <button type="submit">Submit</button>
+@extends('components.layouts.app')
 
-    </form>
-</body>
-</html>
+@section('title', 'Create Post')
+
+@section('content')
+
+<h1 style="text-align:center;">Create Post</h1>
+<div class="container-fluid py-4">
+    <div class="v-50">
+        <div class="row" style="margin-left:25%">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="contact-form">
+                    <form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="control-group">
+                            <input type="text" class="form-control p-4" name="name" value="{{ old('name') }}" placeholder="Title" required />
+                            @error('name')
+                            <p class="help-block text-danger">{{ ' * ' . $message }}</p>
+                            @enderror
+                        </div><br>
+                        <div class="control-group">
+                            <textarea class="form-control p-4" rows="6" name="description" placeholder="Your content" required>{{ old(  'description') }}</textarea>
+                            @error('description')
+                            <p class="help-block text-danger">{{ ' * ' . $message }}</p>
+                            @enderror
+                        </div><br>
+                        <div class="control-group">
+                            <input class="form-control p-1" type="file" name="image" value="{{old('image')}}">
+                        </div><br>
+
+                        <div>
+                            <button class="btn btn-primary btn-block py-3 px-5" type="submit"">Create Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+@endsection
